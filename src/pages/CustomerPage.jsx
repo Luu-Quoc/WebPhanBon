@@ -55,7 +55,7 @@ function CustomerPage() {
 
   const handleDeleteCustomer = useCallback(async (id) => {
     const confirmDelete = window.confirm(
-      "Bạn có chắc muốn xóa khách hàng này không?"
+      "Bạn có chắc muốn xóa khách hàng này không?",
     );
 
     if (!confirmDelete) return;
@@ -129,12 +129,12 @@ function CustomerPage() {
                 <td>{item.address}</td>
                 <td>{item.totalDebt?.toLocaleString("vi-VN") || 0}đ</td>
                 <td>
-                 <button
-                  className="detail-btn"
-                  onClick={() => navigate(`/customers/${item._id}`)}
-                >
-                  Chi tiết
-                </button>
+                  <button
+                    className="detail-btn"
+                    onClick={() => navigate(`/customers/${item._id}`)}
+                  >
+                    Chi tiết
+                  </button>
 
                   {isAdmin && (
                     <>

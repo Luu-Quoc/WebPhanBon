@@ -1,0 +1,119 @@
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  min-height: 100vh;
+
+  background: #1f7a3f;
+
+  padding: 20px 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Logo */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: white;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  margin-bottom: 40px;
+}
+
+.logo span {
+  white-space: nowrap;
+}
+
+/* Menu */
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-item {
+  text-decoration: none;
+
+  color: white;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  font-size: 17px;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.menu-item.active {
+  background: white;
+  color: #1f7a3f;
+  font-weight: 600;
+}
+
+/* Footer */
+
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  padding-top: 16px;
+
+  color: white;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 20px;
+}
+
+.user-box p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.user-box span {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.sidebar-footer small {
+  opacity: 0.7;
+}

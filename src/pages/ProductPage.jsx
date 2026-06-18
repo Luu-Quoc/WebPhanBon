@@ -1,13 +1,8 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import ProductForm from "../components/ProductForm";
 import ProductCard from "../components/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 import {
   getProducts,
@@ -24,6 +19,7 @@ function ProductPage() {
   const [showForm, setShowForm] = useState(false);
 
   const searchInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.isAdmin;
@@ -42,6 +38,12 @@ function ProductPage() {
     loadProducts();
     searchInputRef.current?.focus();
   }, []);
+  const handleViewDetail = useCallback(
+    (id) => {
+      navigate(`/products/${id}`);
+    },
+    [navigate],
+  );
 
   const loadProducts = async () => {
     try {
@@ -79,8 +81,7 @@ function ProductPage() {
         ?.toLowerCase()
         .includes(keyword.toLowerCase());
 
-      const matchCategory =
-        category === "all" || item.category === category;
+      const matchCategory = category === "all" || item.category === category;
 
       return matchKeyword && matchCategory;
     });
@@ -88,7 +89,7 @@ function ProductPage() {
 
   const handleDelete = useCallback(async (id) => {
     const confirmDelete = window.confirm(
-      "Bạn có chắc muốn xóa sản phẩm này không?"
+      "Bạn có chắc muốn xóa sản phẩm này không?",
     );
 
     if (!confirmDelete) return;
@@ -117,10 +118,7 @@ function ProductPage() {
         <h1>Quản lý sản phẩm</h1>
 
         {isAdmin && (
-          <button
-            className="add-btn"
-            onClick={() => setShowForm(true)}
-          >
+          <button className="add-btn" onClick={() => setShowForm(true)}>
             + Thêm sản phẩm
           </button>
         )}
@@ -148,9 +146,7 @@ function ProductPage() {
           <button
             key={item.value}
             className={
-              category === item.value
-                ? "category-btn active"
-                : "category-btn"
+              category === item.value ? "category-btn active" : "category-btn"
             }
             onClick={() => setCategory(item.value)}
           >
@@ -165,6 +161,7 @@ function ProductPage() {
             key={item._id}
             product={item}
             onDelete={handleDelete}
+            onDetail={handleViewDetail}
             isAdmin={isAdmin}
           />
         ))}

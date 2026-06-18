@@ -1,15 +1,16 @@
-function ProductCard({
-  product,
-  onDelete,
-  isAdmin,
-}) {
+function ProductCard({ product, onDelete, onDetail, isAdmin }) {
+  const categoryMap = {
+    organic_fertilizer: "Phân hữu cơ",
+    inorganic_fertilizer: "Phân vô cơ",
+    pesticide: "Thuốc BVTV",
+    seed: "Hạt giống",
+    tool: "Dụng cụ",
+  };
+
   return (
     <div className="product-card">
       <img
-        src={
-          product.image ||
-          "https://placehold.co/400x300?text=No+Image"
-        }
+        src={product.image || "https://placehold.co/400x300?text=No+Image"}
         alt={product.name}
       />
 
@@ -18,48 +19,35 @@ function ProductCard({
 
         <p>
           <strong>Loại:</strong>{" "}
-          {product.category}
+          {categoryMap[product.category] || product.category}
         </p>
 
         <p>
-          <strong>Giá:</strong>{" "}
-          {product.price?.toLocaleString(
-            "vi-VN"
-          )}{" "}
-          đ
+          <strong>Giá:</strong> {product.price?.toLocaleString("vi-VN")} đ
         </p>
 
         <p>
-          <strong>Tồn kho:</strong>{" "}
-          {product.stock} {product.unit}
+          <strong>Tồn kho:</strong> {product.stock} {product.unit}
         </p>
 
         {product.stock <= 5 ? (
-          <span className="low-stock">
-            Sắp hết hàng
-          </span>
+          <span className="low-stock">Sắp hết hàng</span>
         ) : (
-          <span className="in-stock">
-            Còn hàng
-          </span>
+          <span className="in-stock">Còn hàng</span>
         )}
 
         <div className="product-actions">
-          <button className="detail-btn">
+          <button className="detail-btn" onClick={() => onDetail(product._id)}>
             Chi tiết
           </button>
 
           {isAdmin && (
             <>
-              <button className="edit-btn">
-                Sửa
-              </button>
+              <button className="edit-btn">Sửa</button>
 
               <button
                 className="delete-btn"
-                onClick={() =>
-                  onDelete(product._id)
-                }
+                onClick={() => onDelete(product._id)}
               >
                 Xóa
               </button>

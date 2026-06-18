@@ -1,0 +1,92 @@
+.customer-detail-page {
+  padding: 24px;
+}
+
+.back-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 9px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 18px;
+}
+
+.back-btn:hover {
+  background: #5c636a;
+}
+
+.customer-detail-page h2 {
+  margin-bottom: 20px;
+}
+
+.customer-detail-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.customer-detail-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #198754;
+  margin-bottom: 20px;
+}
+
+.customer-detail-card p {
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+.customer-detail-card strong {
+  display: inline-block;
+  min-width: 120px;
+}
+
+.customer-detail-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.customer-detail-section h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #212529;
+}
+
+.customer-detail-section p {
+  color: #666;
+}
+.debt-text {
+  color: #dc3545;
+  font-weight: 700;
+  font-size: 18px;
+}
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.detail-table th {
+  background: #f8f9fa;
+  text-align: left;
+  padding: 12px;
+}
+
+.detail-table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.debt-text {
+  color: #dc3545;
+  font-weight: 700;
+}

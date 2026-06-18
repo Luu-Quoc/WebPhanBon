@@ -2,10 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { getCustomers } from "../services/customerService";
 import { getProducts } from "../services/productService";
-import {
-  createOrder,
-  getOrders,
-} from "../services/orderService";
+import { createOrder, getOrders } from "../services/orderService";
 
 import "./OrderPage.css";
 
@@ -15,19 +12,17 @@ function OrderPage() {
   const [orders, setOrders] = useState([]);
 
   const [customerId, setCustomerId] = useState(
-    localStorage.getItem("order-customer") || ""
+    localStorage.getItem("order-customer") || "",
   );
 
   const [productId, setProductId] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   const [paidAmount, setPaidAmount] = useState(
-    localStorage.getItem("order-paid") || ""
+    localStorage.getItem("order-paid") || "",
   );
 
-  const [note, setNote] = useState(
-    localStorage.getItem("order-note") || ""
-  );
+  const [note, setNote] = useState(localStorage.getItem("order-note") || "");
 
   const [items, setItems] = useState(() => {
     return JSON.parse(localStorage.getItem("order-items")) || [];
@@ -76,9 +71,7 @@ function OrderPage() {
     }
   };
 
-  const selectedProduct = products.find(
-    (item) => item._id === productId
-  );
+  const selectedProduct = products.find((item) => item._id === productId);
 
   const totalAmount = useMemo(() => {
     return items.reduce((sum, item) => {
@@ -90,8 +83,7 @@ function OrderPage() {
 
   const debtAmount = totalAmount - paidValue;
 
-  const changeAmount =
-    paidValue > totalAmount ? paidValue - totalAmount : 0;
+  const changeAmount = paidValue > totalAmount ? paidValue - totalAmount : 0;
 
   const handleAddItem = () => {
     if (!productId || !selectedProduct || quantity <= 0) {
@@ -99,19 +91,15 @@ function OrderPage() {
       return;
     }
 
-    const existingItem = items.find(
-      (item) => item.productId === productId
-    );
+    const existingItem = items.find((item) => item.productId === productId);
 
-    const currentQuantity = existingItem
-      ? existingItem.quantity
-      : 0;
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
 
     const newQuantity = currentQuantity + Number(quantity);
 
     if (selectedProduct.stock < newQuantity) {
       alert(
-        `Sản phẩm ${selectedProduct.name} không đủ tồn kho. Hiện còn ${selectedProduct.stock}`
+        `Sản phẩm ${selectedProduct.name} không đủ tồn kho. Hiện còn ${selectedProduct.stock}`,
       );
       return;
     }
@@ -124,8 +112,8 @@ function OrderPage() {
                 ...item,
                 quantity: newQuantity,
               }
-            : item
-        )
+            : item,
+        ),
       );
     } else {
       setItems([
@@ -144,9 +132,7 @@ function OrderPage() {
   };
 
   const handleRemoveItem = (productId) => {
-    setItems(
-      items.filter((item) => item.productId !== productId)
-    );
+    setItems(items.filter((item) => item.productId !== productId));
   };
 
   const clearDraftOrder = () => {
@@ -186,10 +172,7 @@ function OrderPage() {
           productId: item.productId,
           quantity: item.quantity,
         })),
-        paidAmount:
-          paidValue > totalAmount
-            ? totalAmount
-            : paidValue,
+        paidAmount: paidValue > totalAmount ? totalAmount : paidValue,
         note,
       };
 
@@ -198,8 +181,8 @@ function OrderPage() {
       if (changeAmount > 0) {
         alert(
           `Tạo đơn hàng thành công. Tiền thối lại: ${changeAmount.toLocaleString(
-            "vi-VN"
-          )}đ`
+            "vi-VN",
+          )}đ`,
         );
       } else {
         alert("Tạo đơn hàng thành công");
@@ -210,10 +193,7 @@ function OrderPage() {
       await loadData();
     } catch (error) {
       console.log(error);
-      alert(
-        error.response?.data?.message ||
-          "Tạo đơn hàng thất bại"
-      );
+      alert(error.response?.data?.message || "Tạo đơn hàng thất bại");
     }
   };
 
@@ -228,9 +208,7 @@ function OrderPage() {
 
             <select
               value={customerId}
-              onChange={(e) =>
-                setCustomerId(e.target.value)
-              }
+              onChange={(e) => setCustomerId(e.target.value)}
             >
               <option value="">Chọn khách hàng</option>
 
@@ -247,9 +225,7 @@ function OrderPage() {
 
             <select
               value={productId}
-              onChange={(e) =>
-                setProductId(e.target.value)
-              }
+              onChange={(e) => setProductId(e.target.value)}
             >
               <option value="">Chọn sản phẩm</option>
 
@@ -268,16 +244,11 @@ function OrderPage() {
               type="number"
               min="1"
               value={quantity}
-              onChange={(e) =>
-                setQuantity(Number(e.target.value))
-              }
+              onChange={(e) => setQuantity(Number(e.target.value))}
             />
           </div>
 
-          <button
-            className="add-item-btn"
-            onClick={handleAddItem}
-          >
+          <button className="add-item-btn" onClick={handleAddItem}>
             + Thêm vào đơn
           </button>
         </div>
@@ -304,22 +275,15 @@ function OrderPage() {
               {items.map((item) => (
                 <tr key={item.productId}>
                   <td>{item.productName}</td>
-                  <td>
-                    {item.price.toLocaleString("vi-VN")}đ
-                  </td>
+                  <td>{item.price.toLocaleString("vi-VN")}đ</td>
                   <td>{item.quantity}</td>
                   <td>
-                    {(
-                      item.price * item.quantity
-                    ).toLocaleString("vi-VN")}
-                    đ
+                    {(item.price * item.quantity).toLocaleString("vi-VN")}đ
                   </td>
                   <td>
                     <button
                       className="remove-btn"
-                      onClick={() =>
-                        handleRemoveItem(item.productId)
-                      }
+                      onClick={() => handleRemoveItem(item.productId)}
                     >
                       Xóa
                     </button>
@@ -332,10 +296,7 @@ function OrderPage() {
 
         <div className="order-summary">
           <p>
-            Tổng tiền:{" "}
-            <strong>
-              {totalAmount.toLocaleString("vi-VN")}đ
-            </strong>
+            Tổng tiền: <strong>{totalAmount.toLocaleString("vi-VN")}đ</strong>
           </p>
 
           <label>Khách đã trả</label>
@@ -343,11 +304,7 @@ function OrderPage() {
           <input
             type="text"
             value={formatMoneyInput(paidAmount)}
-            onChange={(e) =>
-              setPaidAmount(
-                e.target.value.replace(/\D/g, "")
-              )
-            }
+            onChange={(e) => setPaidAmount(e.target.value.replace(/\D/g, ""))}
             placeholder="Nhập số tiền đã trả"
           />
 
@@ -377,18 +334,12 @@ function OrderPage() {
             onChange={(e) => setNote(e.target.value)}
           />
 
-          <button
-            className="save-order-btn"
-            onClick={handleCreateOrder}
-          >
+          <button className="save-order-btn" onClick={handleCreateOrder}>
             Tạo đơn hàng
           </button>
 
           {items.length > 0 && (
-            <button
-              className="clear-order-btn"
-              onClick={resetOrderForm}
-            >
+            <button className="clear-order-btn" onClick={resetOrderForm}>
               Xóa đơn đang nhập
             </button>
           )}
@@ -418,38 +369,17 @@ function OrderPage() {
                 <tr key={order._id}>
                   <td>{order.customerName}</td>
 
-                  <td>
-                    {order.totalAmount?.toLocaleString(
-                      "vi-VN"
-                    )}
-                    đ
-                  </td>
+                  <td>{order.totalAmount?.toLocaleString("vi-VN")}đ</td>
+
+                  <td>{order.paidAmount?.toLocaleString("vi-VN")}đ</td>
+
+                  <td>{order.debtAmount?.toLocaleString("vi-VN")}đ</td>
 
                   <td>
-                    {order.paidAmount?.toLocaleString(
-                      "vi-VN"
-                    )}
-                    đ
+                    {order.status === "paid" ? "Đã thanh toán" : "Còn nợ"}
                   </td>
 
-                  <td>
-                    {order.debtAmount?.toLocaleString(
-                      "vi-VN"
-                    )}
-                    đ
-                  </td>
-
-                  <td>
-                    {order.status === "paid"
-                      ? "Đã thanh toán"
-                      : "Còn nợ"}
-                  </td>
-
-                  <td>
-                    {new Date(
-                      order.createdAt
-                    ).toLocaleString("vi-VN")}
-                  </td>
+                  <td>{new Date(order.createdAt).toLocaleString("vi-VN")}</td>
                 </tr>
               ))}
             </tbody>

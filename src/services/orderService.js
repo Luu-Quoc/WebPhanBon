@@ -16,3 +16,22 @@ export const createOrder = async (data, token) => {
 
   return response.data;
 };
+
+export const getOrdersByCustomer = async (customerId) => {
+  const response = await axios.get(
+    `http://localhost:5000/api/order/customer/${customerId}`,
+  );
+
+  return response.data;
+};
+export const getDebtOrders = async () => {
+  const response = await axios.get("http://localhost:5000/api/order/debts");
+  return response.data;
+};
+export const getOrderById = async (id) => {
+  const response = await axios.get(
+    `http://localhost:5000/api/order/get-details/${id}`,
+  );
+
+  return response.data;
+};

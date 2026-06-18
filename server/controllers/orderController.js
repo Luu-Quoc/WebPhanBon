@@ -6,7 +6,13 @@ const Customer = require("../models/customerModel");
 // Tạo đơn hàng
 const createOrder = async (req, res) => {
   try {
-    const { customerId, items, paidAmount = 0, note = "", dueDate = null } = req.body;
+    const {
+      customerId,
+      items,
+      paidAmount = 0,
+      note = "",
+      dueDate = null,
+    } = req.body;
 
     if (!customerId || !items || items.length === 0) {
       return res.status(400).json({
@@ -123,7 +129,71 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-// Lấy chi tiết đơn hàng
+// // Lấy chi tiết đơn hàng
+// const getOrderDetails = async (req, res) => {
+//   try {
+//     const order = await Order.findById(req.params.id);
+
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Không tìm thấy đơn hàng",
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Lấy chi tiết đơn hàng thành công",
+//       data: order,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Lỗi server",
+//       error: error.message,
+//     });
+//   }
+// };
+const getOrdersByCustomer = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      customerId: req.params.customerId,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Lấy lịch sử mua hàng thành công",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Lỗi server khi lấy lịch sử mua hàng",
+      error: error.message,
+    });
+  }
+};
+
+const getDebtOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      debtAmount: { $gt: 0 },
+      status: "debt",
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Lấy danh sách công nợ thành công",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Lỗi server khi lấy công nợ",
+      error: error.message,
+    });
+  }
+};
 const getOrderDetails = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -152,5 +222,8 @@ const getOrderDetails = async (req, res) => {
 module.exports = {
   createOrder,
   getAllOrders,
+  getOrderDetails,
+  getOrdersByCustomer,
+  getDebtOrders,
   getOrderDetails,
 };

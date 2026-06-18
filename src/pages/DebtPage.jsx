@@ -1,20 +1,26 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { getDebtOrders } from "../services/orderService";
+
 function DebtPage() {
-  const debts = [
-    {
-      id: 1,
-      customer: "Chú Ba",
-      amount: 800000,
-      dueDate: "25/06/2026",
-      status: "Chưa trả",
-    },
-    {
-      id: 2,
-      customer: "Anh Tư",
-      amount: 1500000,
-      dueDate: "20/06/2026",
-      status: "Quá hạn",
-    },
-  ];
+  const [debts, setDebts] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadDebts();
+  }, []);
+
+  const loadDebts = async () => {
+    try {
+      const response = await getDebtOrders();
+      setDebts(response.data);
+    } catch (error) {
+      console.log(error);
+      alert("Không tải được danh sách công nợ");
+    }
+  };
 
   return (
     <div>
@@ -25,30 +31,44 @@ function DebtPage() {
           <thead>
             <tr>
               <th>Khách hàng</th>
-              <th>Số tiền nợ</th>
-              <th>Ngày hẹn trả</th>
+              <th>Ngày mua</th>
+              <th>Tổng tiền</th>
+              <th>Đã trả</th>
+              <th>Còn nợ</th>
               <th>Trạng thái</th>
+              <th>Thao tác</th>
               <th>AI hỗ trợ</th>
             </tr>
           </thead>
 
           <tbody>
             {debts.map((item) => (
-              <tr key={item.id}>
-                <td>{item.customer}</td>
-                <td>{item.amount.toLocaleString("vi-VN")}đ</td>
-                <td>{item.dueDate}</td>
-                <td>
-                  <span
-                    className={
-                      item.status === "Quá hạn"
-                        ? "badge bg-danger"
-                        : "badge bg-warning text-dark"
-                    }
-                  >
-                    {item.status}
-                  </span>
+              <tr key={item._id}>
+                <td>{item.customerName}</td>
+
+                <td>{new Date(item.createdAt).toLocaleDateString("vi-VN")}</td>
+
+                <td>{item.totalAmount.toLocaleString("vi-VN")}đ</td>
+
+                <td>{item.paidAmount.toLocaleString("vi-VN")}đ</td>
+
+                <td className="text-danger fw-bold">
+                  {item.debtAmount.toLocaleString("vi-VN")}đ
                 </td>
+
+                <td>
+                  <span className="badge bg-warning text-dark">Chưa trả</span>
+                </td>
+
+                <td>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => navigate(`/orders/${item._id}`)}
+                  >
+                    Chi tiết
+                  </button>
+                </td>
+
                 <td>
                   <button className="btn btn-sm btn-success">
                     Tạo tin nhắn nhắc nợ
@@ -58,6 +78,12 @@ function DebtPage() {
             ))}
           </tbody>
         </table>
+
+        {debts.length === 0 && (
+          <p style={{ textAlign: "center", marginTop: 16 }}>
+            Hiện chưa có công nợ nào
+          </p>
+        )}
       </div>
     </div>
   );
