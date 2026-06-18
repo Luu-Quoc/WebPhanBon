@@ -1,0 +1,7 @@
+.form-box input,
+.form-box select,
+.form-box textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}

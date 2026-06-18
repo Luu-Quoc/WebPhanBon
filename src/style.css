@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  background-color: #f4f7f4;
+  font-family: Arial, sans-serif;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #1f6f43;
+  color: white;
+  padding: 20px;
+}
+
+.logo {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.menu-item {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.menu-item:hover {
+  background-color: #2f8f57;
+  color: white;
+}
+
+.menu-item.active {
+  background-color: #ffffff;
+  color: #1f6f43;
+  font-weight: bold;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.page-title {
+  margin-bottom: 24px;
+  color: #1f3d2b;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.card-box {
+  background-color: white;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card {
+  background-color: white;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card p {
+  margin: 0;
+  color: #666;
+}
+
+.stat-card h4 {
+  margin-top: 10px;
+  color: #1f6f43;
+  font-weight: bold;
+}

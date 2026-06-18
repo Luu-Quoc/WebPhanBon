@@ -1,0 +1,152 @@
+.order-page {
+  padding: 20px;
+}
+
+.page-title {
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+.card-box {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.order-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  align-items: end;
+}
+
+.order-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.order-form select,
+.order-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+}
+
+.add-item-btn {
+  background: #198754;
+  color: white;
+  border: none;
+  padding: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-item-btn:hover {
+  background: #157347;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.order-table th {
+  background: #f5f7fa;
+  padding: 12px;
+  text-align: left;
+}
+
+.order-table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background: #bb2d3b;
+}
+
+.order-summary {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-summary p {
+  font-size: 16px;
+}
+
+.order-summary strong {
+  color: #198754;
+}
+
+.order-summary input,
+.order-summary textarea {
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+}
+
+.order-summary textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.save-order-btn {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.save-order-btn:hover {
+  background: #0b5ed7;
+}
+
+@media (max-width: 992px) {
+  .order-form {
+    grid-template-columns: 1fr;
+  }
+}
+.debt-text {
+  color: #dc3545;
+}
+
+.change-text {
+  color: #0d6efd;
+}
+.clear-order-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.debt-text {
+  color: #dc3545;
+}
+
+.change-text {
+  color: #0d6efd;
+}
