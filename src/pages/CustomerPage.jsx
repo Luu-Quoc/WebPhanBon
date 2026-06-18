@@ -1,13 +1,7 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import CustomerForm from "../components/CustomerForm";
-import "./CustomerPage.css"
 
 import {
   getCustomers,
@@ -24,14 +18,10 @@ function CustomerPage() {
 
   const searchRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.isAdmin;
-
-  useEffect(() => {
-    // document.title = "Quản lý khách hàng - Phân Bón AI";
-    loadCustomers();
-    searchRef.current?.focus();
-  }, []);
 
   const loadCustomers = async () => {
     try {
@@ -42,6 +32,11 @@ function CustomerPage() {
       alert("Không tải được danh sách khách hàng");
     }
   };
+
+  useEffect(() => {
+    loadCustomers();
+    searchRef.current?.focus();
+  }, []);
 
   const handleCreateCustomer = async (data) => {
     try {
@@ -80,7 +75,10 @@ function CustomerPage() {
 
   const filteredCustomers = useMemo(() => {
     return customers.filter((item) => {
-      const text = `${item.name} ${item.phone} ${item.address} ${item.cropType}`;
+      const text = `${item.name || ""} ${item.phone || ""} ${
+        item.address || ""
+      }`;
+
       return text.toLowerCase().includes(keyword.toLowerCase());
     });
   }, [customers, keyword]);
@@ -105,7 +103,7 @@ function CustomerPage() {
       <div className="customer-search">
         <input
           ref={searchRef}
-          placeholder="Tìm theo tên, SĐT, địa chỉ, cây trồng..."
+          placeholder="Tìm theo tên, SĐT, địa chỉ..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -118,8 +116,6 @@ function CustomerPage() {
               <th>Tên khách</th>
               <th>SĐT</th>
               <th>Địa chỉ</th>
-              <th>Cây trồng</th>
-              <th>Diện tích</th>
               <th>Công nợ</th>
               <th>Thao tác</th>
             </tr>
@@ -131,11 +127,14 @@ function CustomerPage() {
                 <td>{item.name}</td>
                 <td>{item.phone}</td>
                 <td>{item.address}</td>
-                <td>{item.cropType}</td>
-                <td>{item.area}</td>
-                <td>{item.totalDebt?.toLocaleString("vi-VN")}đ</td>
+                <td>{item.totalDebt?.toLocaleString("vi-VN") || 0}đ</td>
                 <td>
-                  <button className="detail-btn">Chi tiết</button>
+                 <button
+                  className="detail-btn"
+                  onClick={() => navigate(`/customers/${item._id}`)}
+                >
+                  Chi tiết
+                </button>
 
                   {isAdmin && (
                     <>

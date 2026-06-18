@@ -5,8 +5,6 @@ function CustomerForm({ onSubmit, onCancel }) {
     name: "",
     phone: "",
     address: "",
-    cropType: "",
-    area: "",
     note: "",
   });
 
@@ -51,27 +49,6 @@ function CustomerForm({ onSubmit, onCancel }) {
           name="address"
           placeholder="Địa chỉ"
           value={formData.address}
-          onChange={handleChange}
-        />
-
-        <select
-          name="cropType"
-          value={formData.cropType}
-          onChange={handleChange}
-        >
-          <option value="">Chọn cây trồng</option>
-          <option value="Lúa">Lúa</option>
-          <option value="Cây ăn trái">Cây ăn trái</option>
-          <option value="Rau màu">Rau màu</option>
-          <option value="Cà phê">Cà phê</option>
-          <option value="Hồ tiêu">Hồ tiêu</option>
-          <option value="Khác">Khác</option>
-        </select>
-
-        <input
-          name="area"
-          placeholder="Diện tích canh tác, ví dụ: 2 công"
-          value={formData.area}
           onChange={handleChange}
         />
 
