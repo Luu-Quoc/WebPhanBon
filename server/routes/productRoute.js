@@ -8,12 +8,11 @@ const {
   deleteProduct,
 } = require("../controllers/productController");
 
-const {
-  protect,
-  adminOnly,
-} = require("../middlewares/authMiddleware");
+const { protect, adminOnly } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
+
+const upload = require("../middlewares/upload");
 
 // Public
 router.get("/get-all", getAllProducts);
@@ -24,21 +23,18 @@ router.post(
   "/create",
   protect,
   adminOnly,
-  createProduct
+  upload.single("image"),
+  createProduct,
 );
 
 router.put(
   "/update/:id",
   protect,
   adminOnly,
-  updateProduct
+  upload.single("image"),
+  updateProduct,
 );
 
-router.delete(
-  "/delete/:id",
-  protect,
-  adminOnly,
-  deleteProduct
-);
+router.delete("/delete/:id", protect, adminOnly, deleteProduct);
 
 module.exports = router;

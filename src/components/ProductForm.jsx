@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import "./ProductForm.css"
+import "./ProductForm.css";
 
-function ProductForm({ onSubmit, onCancel }) {
+function ProductForm({ product, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -10,8 +10,39 @@ function ProductForm({ onSubmit, onCancel }) {
     stock: "",
     unit: "bao",
     description: "",
-    image: "",
+    // image: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product.name || "",
+        category: product.category || "",
+        price: product.price || "",
+        stock: product.stock || "",
+        unit: product.unit || "bao",
+        description: product.description || "",
+        image: product.image || "",
+      });
+    } else {
+      setFormData({
+        name: "",
+        category: "",
+        price: "",
+        stock: "",
+        unit: "bao",
+        description: "",
+        image: "",
+      });
+
+      setImageFile(null);
+    }
+  }, [product]);
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -23,13 +54,19 @@ function ProductForm({ onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.category || !formData.price || !formData.stock) {
+    if (
+      !formData.name ||
+      !formData.category ||
+      !formData.price ||
+      !formData.stock
+    ) {
       alert("Vui lòng nhập đầy đủ tên, loại, giá và tồn kho");
       return;
     }
 
     onSubmit({
       ...formData,
+      imageFile,
       price: Number(formData.price),
       stock: Number(formData.stock),
     });
@@ -37,7 +74,7 @@ function ProductForm({ onSubmit, onCancel }) {
 
   return (
     <div className="form-box">
-      <h2>Thêm sản phẩm</h2>
+      <h2>{product ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -83,12 +120,19 @@ function ProductForm({ onSubmit, onCancel }) {
           onChange={handleChange}
         />
 
-        <input
-          name="image"
-          placeholder="Link ảnh tạm thời"
-          value={formData.image}
-          onChange={handleChange}
-        />
+        <label>Ảnh sản phẩm</label>
+        {product?.image && (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="preview-image"
+          />
+        )}
+
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+        {imageFile && (
+          <p className="selected-image">Đã chọn: {imageFile.name}</p>
+        )}
 
         <textarea
           name="description"
@@ -99,14 +143,10 @@ function ProductForm({ onSubmit, onCancel }) {
 
         <div className="form-actions">
           <button type="submit" className="save-btn">
-            Lưu sản phẩm
+            {product ? "Cập nhật" : "Lưu sản phẩm"}
           </button>
 
-          <button
-            type="button"
-            className="cancel-btn"
-            onClick={onCancel}
-          >
+          <button type="button" className="cancel-btn" onClick={onCancel}>
             Hủy
           </button>
         </div>

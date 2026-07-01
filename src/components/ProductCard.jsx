@@ -1,4 +1,4 @@
-function ProductCard({ product, onDelete, onDetail, isAdmin }) {
+function ProductCard({ product, onDelete, onDetail, onEdit, isAdmin }) {
   const categoryMap = {
     organic_fertilizer: "Phân hữu cơ",
     inorganic_fertilizer: "Phân vô cơ",
@@ -43,7 +43,9 @@ function ProductCard({ product, onDelete, onDetail, isAdmin }) {
 
           {isAdmin && (
             <>
-              <button className="edit-btn">Sửa</button>
+              <button className="edit-btn" onClick={() => onEdit(product)}>
+                Sửa
+              </button>
 
               <button
                 className="delete-btn"

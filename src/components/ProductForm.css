@@ -5,3 +5,16 @@
   border: 1px solid #ddd;
   border-radius: 8px;
 }
+.selected-image {
+  margin-top: 8px;
+  color: green;
+  font-size: 14px;
+}
+.preview-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: block;
+}

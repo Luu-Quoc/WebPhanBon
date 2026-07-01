@@ -1,5 +1,8 @@
 const Product = require("../models/productModel");
 
+const cloudinary = require("../config/cloudinary");
+const fs = require("fs");
+
 // Lấy tất cả sản phẩm
 const getAllProducts = async (req, res) => {
   try {
@@ -48,7 +51,28 @@ const getProductDetails = async (req, res) => {
 // Thêm sản phẩm
 const createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    let imageUrl = "";
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "phan-bon-ai",
+      });
+
+      imageUrl = result.secure_url;
+
+      fs.unlinkSync(req.file.path);
+    }
+
+    const product = await Product.create({
+      name: req.body.name,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+      unit: req.body.unit,
+      description: req.body.description,
+      suitableFor: req.body.suitableFor,
+      image: imageUrl,
+    });
 
     res.status(201).json({
       success: true,
@@ -65,13 +89,10 @@ const createProduct = async (req, res) => {
 };
 
 // Cập nhật sản phẩm
+// Cập nhật sản phẩm
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const product = await Product.findById(req.params.id);
 
     if (!product) {
       return res.status(404).json({
@@ -79,6 +100,27 @@ const updateProduct = async (req, res) => {
         message: "Không tìm thấy sản phẩm",
       });
     }
+
+    // Nếu có upload ảnh mới
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "phan-bon-ai",
+      });
+
+      product.image = result.secure_url;
+
+      fs.unlinkSync(req.file.path);
+    }
+
+    product.name = req.body.name;
+    product.category = req.body.category;
+    product.price = req.body.price;
+    product.stock = req.body.stock;
+    product.unit = req.body.unit;
+    product.description = req.body.description;
+    product.suitableFor = req.body.suitableFor;
+
+    await product.save();
 
     res.status(200).json({
       success: true,

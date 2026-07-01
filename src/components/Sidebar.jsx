@@ -11,7 +11,7 @@ function Sidebar() {
     <aside className="sidebar">
       <div>
         <h3 className="logo">
-          🌱 <span>Thanh Phân</span>
+          🌱 <span>QuocLuu</span>
         </h3>
 
         <nav>

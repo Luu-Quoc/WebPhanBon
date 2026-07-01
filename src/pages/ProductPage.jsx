@@ -8,6 +8,7 @@ import {
   getProducts,
   deleteProduct,
   createProduct,
+  updateProduct,
 } from "../services/productService";
 
 import "./ProductPage.css";
@@ -17,6 +18,7 @@ function ProductPage() {
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("all");
   const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
@@ -45,6 +47,10 @@ function ProductPage() {
     [navigate],
   );
 
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setShowForm(true);
+  };
   const loadProducts = async () => {
     try {
       const response = await getProducts();
@@ -59,19 +65,59 @@ function ProductPage() {
     try {
       const token = localStorage.getItem("access_token");
 
-      if (!token) {
-        alert("Bạn cần đăng nhập trước");
-        return;
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("category", data.category);
+      formData.append("price", data.price);
+      formData.append("stock", data.stock);
+      formData.append("unit", data.unit);
+      formData.append("description", data.description);
+
+      if (data.imageFile) {
+        formData.append("image", data.imageFile);
       }
 
-      await createProduct(data, token);
+      await createProduct(formData, token);
+
       await loadProducts();
 
       setShowForm(false);
+
       alert("Thêm sản phẩm thành công");
     } catch (error) {
       console.log(error);
       alert(error.response?.data?.message || "Thêm sản phẩm thất bại");
+    }
+  };
+  const handleUpdateProduct = async (data) => {
+    try {
+      const token = localStorage.getItem("access_token");
+
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("category", data.category);
+      formData.append("price", data.price);
+      formData.append("stock", data.stock);
+      formData.append("unit", data.unit);
+      formData.append("description", data.description);
+
+      if (data.imageFile) {
+        formData.append("image", data.imageFile);
+      }
+
+      await updateProduct(editingProduct._id, formData, token);
+
+      await loadProducts();
+
+      setEditingProduct(null);
+      setShowForm(false);
+
+      alert("Cập nhật thành công");
+    } catch (error) {
+      console.log(error);
+      alert(error.response?.data?.message || "Cập nhật thất bại");
     }
   };
 
@@ -118,7 +164,13 @@ function ProductPage() {
         <h1>Quản lý sản phẩm</h1>
 
         {isAdmin && (
-          <button className="add-btn" onClick={() => setShowForm(true)}>
+          <button
+            className="add-btn"
+            onClick={() => {
+              setEditingProduct(null);
+              setShowForm(true);
+            }}
+          >
             + Thêm sản phẩm
           </button>
         )}
@@ -126,8 +178,12 @@ function ProductPage() {
 
       {showForm && (
         <ProductForm
-          onSubmit={handleCreateProduct}
-          onCancel={() => setShowForm(false)}
+          product={editingProduct}
+          onSubmit={editingProduct ? handleUpdateProduct : handleCreateProduct}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingProduct(null);
+          }}
         />
       )}
 
@@ -162,6 +218,7 @@ function ProductPage() {
             product={item}
             onDelete={handleDelete}
             onDetail={handleViewDetail}
+            onEdit={handleEditProduct}
             isAdmin={isAdmin}
           />
         ))}
